@@ -2,6 +2,7 @@ import discord
 import os
 import requests
 import json
+import random
 
 client = discord.Client()
 
@@ -24,6 +25,9 @@ def get_dog():
   image = json_data['message']
   return image
 
+def roll_dice():
+  number = random.randint(1, 6)
+  return number
 
 @client.event
 async def on_message(message):
@@ -37,5 +41,11 @@ async def on_message(message):
   if message.content.startswith('>dog'):
     image = get_dog()
     await message.channel.send(image)
+
+  if message.content.startswith('>dice'):
+    dice = roll_dice()
+    await message.channel.send(dice)
+
+
 
 client.run(os.getenv('TOKEN'))
