@@ -19,6 +19,13 @@ def get_joke():
     joke = json_data['joke']
   return(joke)
 
+def get_meme():
+  response = requests.get("https://meme-api.herokuapp.com/gimme")
+  json_data = json.loads(response.text)
+  arr = json_data['preview']
+  image = arr[len(arr)-1]
+  return image
+
 def get_dog():
   response = requests.get("https://dog.ceo/api/breeds/image/random")
   json_data = json.loads(response.text)
@@ -40,6 +47,10 @@ async def on_message(message):
   
   if message.content.startswith('>dog'):
     image = get_dog()
+    await message.channel.send(image)
+
+  if message.content.startswith('>meme'):
+    image = get_meme()
     await message.channel.send(image)
 
   if message.content.startswith('>dice'):
