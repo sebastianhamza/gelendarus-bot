@@ -8,6 +8,7 @@ authors = ["sebastianhamza <<>>"]
 python = "^3.8"
 discord = "^1.0.1"
 Flask = "^2.0.1"
+qrcode = "^7.2"
 
 [tool.poetry.dev-dependencies]
 

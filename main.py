@@ -3,6 +3,7 @@ import os
 import requests
 import json
 import random
+import qrcode
 from discord.ext import commands
 from keep_alive import keep_alive
 
@@ -26,11 +27,29 @@ async def info(ctx):
 
 @bot.command()    
 async def dictionary(ctx, arg):
-    await ctx.send(get_dictionary(arg))
+  await ctx.send(get_dictionary(arg))
+
+@bot.command()
+async def qr(ctx, arg):
+  generate_qr(arg)
+  await ctx.send(file=discord.File('qrcode001.png'))
 
 @bot.command()    
 async def meme(ctx):
     await ctx.send(get_meme())
+
+myID= 226330983354335243
+
+@bot.command()
+async def hello(ctx):
+  print(ctx.author.id)
+  if ctx.author.id == myID:
+    print(ctx.author.id)
+    await ctx.send('Noroc sefule!')
+  else:
+    await ctx.send('Noroc bulangiule!')
+
+
 
 
 
@@ -72,6 +91,18 @@ def get_dog():
 def roll_dice():
   number = random.randint(1, 6)
   return number
+
+def generate_qr(content_data):
+  qr = qrcode.QRCode(
+          version=1,
+          box_size=10,
+          border=2)
+  qr.add_data(content_data)
+  qr.make(fit=True)
+
+  img = qr.make_image(fill='black', back_color='white')
+
+  img.save('qrcode001.png')
 
 # @client.event
 # async def on_message(message):
