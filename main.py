@@ -6,6 +6,11 @@ import random
 import qrcode
 from discord.ext import commands
 from keep_alive import keep_alive
+from discord import FFmpegPCMAudio
+from dotenv import load_dotenv
+from discord.utils import get
+
+load_dotenv()
 
 #client = discord.Client()
 
@@ -49,7 +54,38 @@ async def hello(ctx):
   else:
     await ctx.send('Noroc bulangiule!')
 
+@bot.command(aliases=['p', 'pla'])
+async def play(ctx, url: str = 'http://live.magicfm.ro:9128/magicfm.aacp'):
+    
+    # channel = ctx.message.author.voice.channel
+    # # global player
+    # # try:
+    # #     player = await channel.connect()
+    # # except:
+    # #     pass
+    # # player.play(FFmpegPCMAudio('http://stream.radioparadise.com/rock-128'))
+    # voice = await channel.connect()
+    # if(voice):
+    #   channel.play(FFmpegPCMAudio("song.mp3"))
+    channel = ctx.message.author.voice.channel
+    if not channel:
+        await ctx.send("You are not connected to a voice channel")
+        return
+    try:
+      voice = get(bot.voice_clients, guild=ctx.guild)
+      if voice and voice.is_connected():
+          await voice.move_to(channel)
+      else:
+          voice = await channel.connect()
+      source = FFmpegPCMAudio(url)
+      player = voice.play(source)
+    except:
+      await ctx.send("Nu merge ca nu are picioare")
 
+
+# @bot.command(aliases=['s', 'sto'])
+# async def stop(ctx):
+#     player.stop()
 
 
 
